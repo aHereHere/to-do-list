@@ -13,10 +13,11 @@ function App() {
   }
   function handleClick()
   {
+    if(value)
     setTasks((prev)=>{var newArr=[...prev,value];
     setValue("");
   return newArr;});
-  console.log(tasks);
+  
     
     
   }
@@ -31,7 +32,7 @@ function App() {
     <input type='text' value={value} onChange={handleChange}>
 
     </input>
-    <button  onClick={handleClick}>Add the task(Click on task to delete)</button>
+    <button  onClick={handleClick}>Add the task</button>
      {
       
       tasks.map((t,index)=>
