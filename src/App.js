@@ -32,7 +32,7 @@ function App() {
     <input type='text' value={value} onChange={handleChange}>
 
     </input>
-    <button  onClick={handleClick}>Add the task</button>
+    <button  onClick={handleClick} class="btn btn-outline-dark add">Add the task</button>
      {
       
       tasks.map((t,index)=>
