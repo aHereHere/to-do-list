@@ -1,42 +1,90 @@
 
 import './App.css';
-import { useState } from 'react';
+import { useState,useReducer } from 'react';
 import Item from './item';
 
 function App() {
-  var [tasks,setTasks]=useState([]);
   var [value,setValue]=useState("");
 
+  const initialTasks=[{id:0,task_text:"study"},{id:1,task_text:"play"}];
+  var nextId=2;
+  const [tasks,dispatch]=useReducer(taskReducer,initialTasks);
+
+  
+ 
   function handleChange(Event)
   {
     setValue(Event.target.value);
   }
-  function handleClick()
+  function handleAdd()
   {
     if(value)
-    setTasks((prev)=>{var newArr=[...prev,value];
-    setValue("");
-  return newArr;});
+    dispatch(
+  {
+    id:nextId++,
+    task_text:value,
+    value:'add'
+
+
+  }
+  );
   
     
     
   }
   function handleDelete(itemNo)
   {
+    nextId--;
     
-    setTasks((prev)=>prev.filter((p,index)=>index!==itemNo));
+    dispatch(
+      {
+        id:itemNo,
+        
+        value:'delete'
+    
+    
+      }
+      );
    
   }
+
+  function taskReducer(tasks,action)
+  { var newArr=[];
+    switch(action.value)
+    {
+      case 'add':{
+        setValue(""); newArr=[...tasks,{id:action.id,  task_text:action.task_text}];
+        console.log(newArr);
+      return newArr;}
+      case 'delete':{  newArr=[];
+      for(var i=0;i<tasks.length;i++)
+        {
+          if(i<action.id)
+            newArr.push(tasks[i]);
+          else if(i>action.id)
+            {
+              newArr.push({id:i-1,task_text:tasks[i].task_text});
+            }
+        }
+        return newArr;}
+        default:return tasks;
+
+
+    }
+
+  }
+  
   return (
   <div >
     <input type='text' value={value} onChange={handleChange}>
 
     </input>
-    <button  onClick={handleClick} class="btn btn-outline-dark add">Add the task</button>
+    <button  onClick={handleAdd} class="btn btn-outline-dark add">Add the task</button>
      {
       
-      tasks.map((t,index)=>
-     <Item itemName={t} itemNo={index} onClick={handleDelete}/>)
+      tasks.map(
+        (t,index)=>
+     <Item itemName={t.task_text} itemNo={t.id} onClick={()=>handleDelete(t.id)}/>)
      }
     </div>
   );
