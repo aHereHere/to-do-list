@@ -1,6 +1,7 @@
 
 import './App.css';
 import { useState,useReducer } from 'react';
+import Timer from './Timer';
 import Item from './item';
 
 function App() {
@@ -76,6 +77,10 @@ function App() {
   
   return (
   <div >
+  <div className="middle">
+  <h3>Focus timer for your tasks:</h3>
+  <Timer/>
+  </div>
     <input type='text' value={value} onChange={handleChange}>
 
     </input>
