@@ -3,12 +3,12 @@ import './App.css';
 import { useState,useReducer } from 'react';
 import Timer from './Timer';
 import Item from './item';
-
+var nextId=1;
 function App() {
   var [value,setValue]=useState("");
 
   const initialTasks=[{id:0,task_text:"study"},{id:1,task_text:"play"}];
-  var nextId=2;
+ 
   const [tasks,dispatch]=useReducer(taskReducer,initialTasks);
 
   
@@ -19,10 +19,11 @@ function App() {
   }
   function handleAdd()
   {
+    nextId+=1;
     if(value)
     dispatch(
   {
-    id:nextId++,
+    id:nextId,
     task_text:value,
     value:'add'
 
@@ -51,10 +52,12 @@ function App() {
 
   function taskReducer(tasks,action)
   { var newArr=[];
+    console.log(action.id);
     switch(action.value)
     {
       case 'add':{
-        setValue(""); newArr=[...tasks,{id:action.id,  task_text:action.task_text}];
+        setValue("");
+         newArr=[...tasks,{id:action.id,  task_text:action.task_text}];
         console.log(newArr);
       return newArr;}
       case 'delete':{  newArr=[];
